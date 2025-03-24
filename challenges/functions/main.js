@@ -65,11 +65,7 @@ GOOD LUCK 😀
 */
 
 function createQuestion(question, options) {
-  let str = question;
-  for (const option of options) {
-    str += `\n${option}`;
-  }
-  str += '\n(Write option number)';
+  const str = `${question}\n${options.join('\n')}\n(Write option number)`;
   return str;
 }
 
@@ -80,16 +76,39 @@ const poll = {
   answers: new Array(4).fill(0),
 
   registerNewAnswer() {
-    let answer = prompt(createQuestion(this.question, this.options));
+    const answer = Number(prompt(createQuestion(this.question, this.options)));
 
     if (isNaN(answer) || answer < 0 || answer > 3) {
       alert('Answer is not a valid number!');
       return;
     }
 
-    this.answers[Number(answer)]++;
+    this.answers[answer]++;
+    this.displayResults();
+    this.displayResults('string');
+  },
+  displayResults(type = 'array') {
+    if (type === 'array') {
+      console.log(this.answers);
+    } else if (type === 'string') {
+      console.log(`Poll results are ${this.answers.join(', ')}.`);
+    }
   },
 };
 
 const btnAnswer = document.querySelector('.poll');
 btnAnswer.addEventListener('click', poll.registerNewAnswer.bind(poll));
+
+// BONUS TEST DATA 1: [5, 2, 3]
+// BONUS TEST DATA 2: [1, 5, 3, 9, 6, 1]
+const testObj = {
+  answers: [5, 2, 3],
+};
+
+poll.displayResults.call({ answers: [5, 2, 3] });
+poll.displayResults.call({ answers: [5, 2, 3] }, 'string');
+poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] });
+poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] }, 'string');
+
+poll.displayResults.call(testObj);
+poll.displayResults.call(testObj, 'string');
