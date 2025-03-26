@@ -57,6 +57,15 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const currencies = new Map([
+  ['USD', 'United States dollar'],
+  ['EUR', 'Euro'],
+  ['GBP', 'Pound sterling'],
+]);
+
+// FUNCTIONALITY
+
+// show the movements on the UI
 function displayMovements(movements) {
   containerMovements.innerHTML = '';
 
@@ -77,12 +86,30 @@ function displayMovements(movements) {
 
 displayMovements(account1.movements);
 
+// add a username to each account object
+function createUsernames(accs) {
+  accs.forEach(acc => {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+}
+
+createUsernames(accounts);
+
 // LECTURES
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
-
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+const eurToUsd = 1.1;
+
+const movementsUsd = movements.map(mov => Math.round(mov * eurToUsd));
+
+console.log(movements);
+console.log(movementsUsd);
+
+const deposits = movements.filter(mov => mov > 0);
+
+console.log(deposits);
