@@ -76,7 +76,7 @@ function displayMovements(movements) {
           <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
         </div>
         `;
 
@@ -85,6 +85,34 @@ function displayMovements(movements) {
 }
 
 displayMovements(account1.movements);
+
+function calcDisplayBalance(movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = balance + '€';
+}
+
+calcDisplayBalance(account1.movements);
+
+function calcDisplaySummary(movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov);
+  labelSumIn.textContent = incomes + '€';
+
+  const spends = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov);
+  labelSumOut.textContent = Math.abs(spends) + '€';
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter(deposit => deposit >= 1)
+    .reduce((acc, int) => acc + int);
+  labelSumInterest.textContent = interest + '€';
+}
+
+calcDisplaySummary(account1.movements);
 
 // add a username to each account object
 function createUsernames(accs) {
@@ -113,3 +141,12 @@ console.log(movementsUsd);
 const deposits = movements.filter(mov => mov > 0);
 
 console.log(deposits);
+
+const balance = movements.reduce((acc, current) => acc + current, 0);
+
+console.log(balance);
+
+// maximum value
+const maxValue = movements.reduce((max, mov) => (mov > max ? mov : max));
+
+console.log(maxValue);
