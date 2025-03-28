@@ -168,6 +168,8 @@ btnTransfer.addEventListener('click', e => {
     acc => acc.username === inputTransferTo.value
   );
 
+  inputTransferAmount.value = inputTransferTo.value = '';
+
   if (
     amount > 0 &&
     receiverAcc &&
@@ -181,6 +183,28 @@ btnTransfer.addEventListener('click', e => {
     // update ui
     updateUI(currentAccount);
   }
+});
+
+btnClose.addEventListener('click', e => {
+  e.preventDefault();
+
+  if (
+    currentAccount.username === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === inputCloseUsername.value
+    );
+
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+
+  // Clear fields
+  inputCloseUsername.value = inputClosePin.value = '';
 });
 
 // LECTURES
