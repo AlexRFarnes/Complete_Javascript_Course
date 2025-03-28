@@ -65,15 +65,15 @@ const currencies = new Map([
 
 // FUNCTIONALITY
 
-function updateUI(account) {
+function updateUI(accs) {
   // display movements
-  displayMovements(account.movements);
+  displayMovements(accs.movements);
 
   // display balance
-  calcDisplayBalance(account);
+  calcDisplayBalance(accs);
 
   // display summary
-  calcDisplaySummary(account);
+  calcDisplaySummary(accs);
 }
 
 // show the movements on the UI
@@ -95,25 +95,25 @@ function displayMovements(movements) {
   });
 }
 
-function calcDisplayBalance(account) {
-  account.balance = account.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = account.balance + '€';
+function calcDisplayBalance(accs) {
+  accs.balance = accs.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = accs.balance + '€';
 }
 
-function calcDisplaySummary(account) {
-  const incomes = account.movements
+function calcDisplaySummary(accs) {
+  const incomes = accs.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = incomes + '€';
 
-  const spends = account.movements
+  const spends = accs.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = Math.abs(spends) + '€';
 
-  const interest = account.movements
+  const interest = accs.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * account.interestRate) / 100)
+    .map(deposit => (deposit * accs.interestRate) / 100)
     .filter(deposit => deposit >= 1)
     .reduce((acc, int) => acc + int, 0);
   labelSumInterest.textContent = interest + '€';
