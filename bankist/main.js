@@ -77,10 +77,12 @@ function updateUI(accs) {
 }
 
 // show the movements on the UI
-function displayMovements(movements) {
+function displayMovements(movements, sort = false) {
   containerMovements.innerHTML = '';
 
-  movements.forEach((mov, i) => {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach((mov, i) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
         <div class="movements__row">
@@ -222,6 +224,13 @@ btnClose.addEventListener('click', e => {
   inputCloseUsername.value = inputClosePin.value = '';
 });
 
+let sorted = false;
+btnSort.addEventListener('click', e => {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
+
 // LECTURES
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
@@ -285,6 +294,22 @@ const overallBalance2 = accounts
   .flatMap(acc => acc.movements)
   .reduce((acc, mov) => acc + mov, 0);
 console.log(overallBalance2);
+
+// sort
+// return < 0, A, B (keep order) A - B => < 0
+// return > 0, B, A (switch order) A - B => > 0
+// where A and B are any 2 consecutive elements in the array
+/* [...movements].sort((a, b) => {
+  if (a > b) return 1;
+  if (b > a) return -1;
+})*/
+
+console.log(
+  'Sorted movements (ascending): ' + [...movements].sort((a, b) => a - b)
+);
+console.log(
+  'Sorted movements (descending): ' + [...movements].sort((a, b) => b - a)
+);
 
 // Challenge
 
