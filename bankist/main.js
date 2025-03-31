@@ -256,18 +256,22 @@ const maxValue = movements.reduce((max, mov) => (mov > max ? mov : max));
 // console.log(maxValue);
 
 // find
+console.log('find()');
 const firstWithdrawal = movements.find(mov => mov < 0);
-// console.log(firstWithdrawal);
+console.log(firstWithdrawal);
 
 // some
+console.log('some()');
 const anyDeposits = movements.some(mov => mov > 0);
-// console.log(anyDeposits);
+console.log(anyDeposits);
 
 // any
+console.log('any()');
 const allDeposits = movements.every(mov => mov > 0);
-// console.log(allDeposits);
+console.log(allDeposits);
 
 // flat
+console.log('flat()');
 const arr = [
   [1, 2, 3],
   [4, 5, 6],
@@ -290,6 +294,7 @@ const overallBalance = accounts
 console.log(overallBalance);
 
 // flatMap (only goes 1 level deep)
+console.log('flatMap()');
 const overallBalance2 = accounts
   .flatMap(acc => acc.movements)
   .reduce((acc, mov) => acc + mov, 0);
@@ -310,6 +315,39 @@ console.log(
 console.log(
   'Sorted movements (descending): ' + [...movements].sort((a, b) => b - a)
 );
+
+// Array grouping
+const groupedMovements = Object.groupBy(movements, movement =>
+  movement > 0 ? 'deposits' : 'withdrawals'
+);
+console.log(groupedMovements);
+
+// Create and fill arrays
+console.log('fill() and from()');
+const x = new Array(7);
+console.log(x);
+x.fill(0, 2, 5);
+console.log(x);
+
+const y = Array.from({ length: 7 }, (_, i) => i + 1);
+console.log(y);
+
+console.log(Array.from('foobar'));
+
+console.log(Array.from(document.querySelectorAll('button')));
+
+// Non-destructive alternatives: toReversed, toSorted, toSpliced, with
+console.log('toReversed()');
+console.log(movements);
+// const reversedMovements = movements.slice().reverse();
+const reversedMovements = movements.toReversed();
+console.log(reversedMovements);
+console.log(movements);
+
+const newMovements = movements.with(1, 2000);
+console.log('with()');
+console.log(movements);
+console.log(newMovements);
 
 // Challenge
 
