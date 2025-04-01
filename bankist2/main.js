@@ -310,3 +310,62 @@ console.log(bigNumber);
 
 const priceCents = 345_99;
 console.log(priceCents);
+
+// BigInt
+console.log(2 ** 53 - 1);
+console.log(Number.MAX_SAFE_INTEGER);
+console.log(2 ** 53 + 1);
+console.log(2 ** 53 + 2);
+console.log(2 ** 53 + 3);
+console.log(2 ** 53 + 4);
+console.log(484545236521456985495746314646875621548n);
+
+console.log(BigInt(48321456));
+
+// Operations
+console.log(10000n + 10000n);
+console.log(584562135487456215621563316n * 100000n);
+// console.log(Math.sqrt(16n)); // not possible
+console.log(10n / 3n); // return the closest BigInt
+
+const huge = 4578954621562212n;
+const num = 23;
+console.log(huge * BigInt(num));
+
+// Comparison
+console.log(15n < 20);
+console.log(20n > 15);
+console.log(20n === 20);
+console.log(20n == 20);
+console.log(typeof 20n);
+
+// Dates
+// Create a date
+const now = new Date();
+console.log(now);
+
+console.log(new Date('Apr 02 2025 05:38:03'));
+
+console.log(new Date('December 24, 2025')); // not recommended to create the string myself, because it can be unreliable
+console.log(account1.movementsDates[0]);
+
+console.log(new Date(2025, 2, 4, 15, 30, 5)); // months are zero based
+
+console.log(new Date(0));
+console.log(new Date(3 * 24 * 60 * 60 * 1000));
+
+// Working with dates
+const future = new Date(2037, 10, 19, 15, 23);
+
+console.log(future);
+console.log(future.getFullYear()); // instead of get getYear()
+console.log(future.getMonth());
+console.log(future.getDate());
+console.log(future.getDay());
+console.log(future.toISOString());
+console.log(future.getTime());
+console.log(new Date(2142228180000));
+console.log(Date.now());
+
+future.setFullYear(2040);
+console.log(future);
