@@ -105,7 +105,7 @@ function displayMovements(movements, sort = false) {
           <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-          <div class="movements__value">${mov}€</div>
+          <div class="movements__value">${mov.toFixed(2)}€</div>
         </div>
         `;
 
@@ -115,26 +115,26 @@ function displayMovements(movements, sort = false) {
 
 function calcDisplayBalance(accs) {
   accs.balance = accs.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = accs.balance + '€';
+  labelBalance.textContent = accs.balance.toFixed(2) + '€';
 }
 
 function calcDisplaySummary(accs) {
   const incomes = accs.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = incomes + '€';
+  labelSumIn.textContent = incomes.toFixed(2) + '€';
 
   const spends = accs.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = Math.abs(spends) + '€';
+  labelSumOut.textContent = Math.abs(spends).toFixed(2) + '€';
 
   const interest = accs.movements
     .filter(mov => mov > 0)
     .map(deposit => (deposit * accs.interestRate) / 100)
     .filter(deposit => deposit >= 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = interest + '€';
+  labelSumInterest.textContent = interest.toFixed(2) + '€';
 }
 
 // add a username to each account object
@@ -205,7 +205,7 @@ btnTransfer.addEventListener('click', e => {
 
 btnLoan.addEventListener('click', e => {
   e.preventDefault();
-  const amount = +inputLoanAmount.value;
+  const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // add the movements
@@ -274,3 +274,39 @@ console.log(Number.isFinite(23 / 0));
 console.log(Number.isInteger(23));
 console.log(Number.isInteger(23.0));
 console.log(Number.isInteger(23 / 0));
+
+// Random number generator
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+console.log(randomInt(10, 20));
+console.log(randomInt(0, 3));
+
+// Rounding integers
+console.log('Math.trunc: 19.9');
+console.log(Math.trunc(19.9));
+console.log('Math.round: 23.3');
+console.log(Math.round(23.3));
+console.log('Math.round: 23.9');
+console.log(Math.round(23.9));
+console.log('Math.ceil: 23.3');
+console.log(Math.ceil(23.3));
+console.log('Math.floor: 23.9');
+console.log(Math.floor(23.9));
+
+// Rounding decimals
+console.log((2.7).toFixed(0));
+console.log((2.7).toFixed(3));
+console.log((2.345).toFixed(2));
+console.log(+(2.345).toFixed(2));
+
+// Reminder operator
+console.log(5 % 2);
+
+// Numeric separators ( _ )
+// 287,460,000,000
+const bigNumber = 287_460_000_000;
+console.log(bigNumber);
+
+const priceCents = 345_99;
+console.log(priceCents);
