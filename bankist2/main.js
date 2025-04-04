@@ -15,12 +15,12 @@ const account1 = {
     '2024-01-28T09:15:04.904Z',
     '2024-04-01T10:17:24.185Z',
     '2024-05-08T14:11:59.604Z',
-    '2024-05-27T17:01:17.194Z',
-    '2024-07-11T23:36:17.929Z',
-    '2025-04-01T10:51:36.790Z',
+    '2025-03-31T17:01:17.194Z',
+    '2025-04-01T23:36:17.929Z',
+    '2025-04-03T10:51:36.790Z',
   ],
   currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  locale: 'es-MX', // de-DE
 };
 
 const account2 = {
@@ -91,19 +91,17 @@ function updateUI(acc) {
   calcDisplaySummary(acc);
 }
 
-function formatMovementDate(movementDate) {
+function formatMovementDate(movementDate, locale) {
   const calCaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
   const daysPassed = calCaysPassed(new Date(), new Date(movementDate));
 
-  console.log(daysPassed);
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
 
-  const date = new Date(movementDate);
-  const day = `${date.getDate()}`.padStart(2, 0);
-  const month = `${date.getMonth() + 1}`.padStart(2, 0);
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+  return new Intl.DateTimeFormat(locale).format(new Date(movementDate));
 }
 
 // Show the movements on the UI
@@ -118,7 +116,7 @@ function displayMovements(acc, sort = false) {
   if (sort) combinedMovsDates.sort((a, b) => a.movement - b.movement);
 
   combinedMovsDates.forEach(({ movement, movementDate }, i) => {
-    const displayDate = formatMovementDate(movementDate);
+    const displayDate = formatMovementDate(movementDate, acc.locale);
 
     const type = movement > 0 ? 'deposit' : 'withdrawal';
 
@@ -197,14 +195,20 @@ btnLogin.addEventListener('click', e => {
     }`;
     containerApp.style.opacity = 1;
 
-    // Create current date and time
     const now = new Date();
-    const day = `${now.getDate()}`.padStart(2, 0);
-    const month = `${now.getMonth() + 1}`.padStart(2, 0);
-    const year = now.getFullYear();
-    const hour = `${now.getHours()}`.padStart(2, 0);
-    const minute = `${now.getMinutes()}`.padStart(2, 0);
-    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minute}`;
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+    };
+    const locale = currentAccount.locale;
+
+    // Intl API
+    labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(
+      now
+    );
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
