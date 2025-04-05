@@ -31,3 +31,88 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+////////////////////////////////////////////////////////////////////
+// LECTURES
+
+// Selecting elements
+console.log(document.documentElement);
+console.log(document.head);
+console.log(document.body);
+
+const header = document.querySelector('.header');
+const allSections = document.querySelectorAll('.section');
+console.log(allSections);
+
+console.log(document.getElementById('section--1')); // HTMLCollection
+const allButtons = document.getElementsByTagName('button');
+console.log(allButtons);
+
+console.log(document.getElementsByClassName('btn'));
+
+// Creating and inserting elements
+
+// .insertAdjacentHTML
+const message = document.createElement('div');
+message.classList.add('cookie-message');
+// message.textContent = 'We use cookies for improved functionality and analytics.';
+message.innerHTML =
+  'We use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
+
+// header.prepend(message);
+header.append(message);
+// header.append(message.cloneNode(true));
+
+// header.before(message);
+// header.after(message);
+
+// Delete elements
+document.querySelector('.btn--close-cookie').addEventListener('click', () => {
+  message.remove();
+});
+
+// Styles
+message.style.backgroundColor = '#37383d';
+message.style.width = '120%';
+message.style.paddingTop = '1rem';
+message.style.paddingBottom = '1rem';
+
+// Access inline styles (or styles defined in JS)
+console.log(message.style.color);
+console.log(message.style.backgroundColor);
+
+// Get the actual styles as the object is seen in the browser
+console.log(getComputedStyle(message).color);
+console.log(getComputedStyle(message).height);
+
+document.documentElement.style.setProperty('--color-primary', 'orangered');
+
+// Attributes
+const logo = document.querySelector('.nav__logo');
+console.log(logo.src);
+console.log(logo.alt);
+
+// Non-standard
+logo.setAttribute('company', 'Bankist');
+console.log(logo.getAttribute('company'));
+
+console.log(logo);
+
+console.log(logo.src); // absolute path
+console.log(logo.getAttribute('src')); // relative path
+
+const link = document.querySelector('.nav__link--btn');
+console.log(link.href); // absolute path
+console.log(link.getAttribute('href')); // relative path
+
+// Data attributes
+console.log(logo.dataset.versionNumber);
+
+// Classes
+
+// logo.classList.add();
+// logo.classList.remove();
+// logo.classList.toggle();
+// logo.classList.contains();
+
+// logo.className = 'something'; overrides the previous classes
