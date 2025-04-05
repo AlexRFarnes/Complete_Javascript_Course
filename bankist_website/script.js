@@ -32,6 +32,34 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+console.log(btnScrollTo);
+
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', e => {
+  // const s1coords = section1.getBoundingClientRect();
+
+  // console.log(`Current scroll X/Y: ${window.scrollX}/${window.scrollY}`);
+
+  // Scrolling
+  // object's current position + current scroll
+
+  // window.scrollTo(
+  //   s1coords.left + window.scrollX,
+  //   s1coords.top + window.scrollY
+  // );
+
+  // window.scrollTo({
+  //   left: s1coords.left + window.scrollX,
+  //   top: s1coords.top + window.scrollY,
+  //   behavior: 'smooth',
+  // });
+
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+/*
 ////////////////////////////////////////////////////////////////////
 // LECTURES
 
@@ -116,3 +144,5 @@ console.log(logo.dataset.versionNumber);
 // logo.classList.contains();
 
 // logo.className = 'something'; overrides the previous classes
+
+*/
