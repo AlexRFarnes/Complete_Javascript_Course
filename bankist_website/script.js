@@ -7,6 +7,12 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -32,31 +38,83 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-console.log(btnScrollTo);
-
-const section1 = document.querySelector('#section--1');
-
 btnScrollTo.addEventListener('click', e => {
-  // const s1coords = section1.getBoundingClientRect();
-
-  // console.log(`Current scroll X/Y: ${window.scrollX}/${window.scrollY}`);
-
-  // Scrolling
-  // object's current position + current scroll
-
-  // window.scrollTo(
-  //   s1coords.left + window.scrollX,
-  //   s1coords.top + window.scrollY
-  // );
-
-  // window.scrollTo({
-  //   left: s1coords.left + window.scrollX,
-  //   top: s1coords.top + window.scrollY,
-  //   behavior: 'smooth',
-  // });
-
+  // Modern way
   section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Page Navigation with smooth scrolling
+// document.querySelectorAll('.nav__link').forEach(link =>
+//   link.addEventListener('click', e => {
+//     e.preventDefault();
+//     const id = link.getAttribute('href');
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   })
+// );
+
+// Event delegation
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+document.querySelector('.nav__links').addEventListener('click', e => {
+  e.preventDefault();
+
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+// Tabbed component
+tabsContainer.addEventListener('click', e => {
+  const clicked = e.target.closest('.operations__tab');
+
+  // Guard clause
+  if (!clicked) return;
+
+  // Remnove active class
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  tabsContent.forEach(content =>
+    content.classList.remove('operations__content--active')
+  );
+
+  // Active tab
+  clicked.classList.add('operations__tab--active');
+  // Active content
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
+// Menu fade animation
+
+function handleHover(e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    if (link !== logo) logo.style.opacity = this;
+  }
+}
+
+// Passing "argument" into hanlder (technically event handlers can only take 1 real argument, the event)
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+// Sticky navigation
+const intialCoords = section1.getBoundingClientRect();
+
+window.addEventListener('scroll', () => {
+  console.log(window.scrollY);
+  console.log(intialCoords);
+
+  if (window.scrollY > intialCoords.top) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
 });
 
 /*
@@ -144,5 +202,94 @@ console.log(logo.dataset.versionNumber);
 // logo.classList.contains();
 
 // logo.className = 'something'; overrides the previous classes
+
+
+const h1 = document.querySelector('h1');
+
+const alertH1 = e => {
+  console.log('addEventListener');
+};
+
+h1.addEventListener('mouseenter', alertH1);
+
+setTimeout(() => {
+  h1.removeEventListener('mouseenter', alertH1);
+}, 1000);
+
+// h1.onmouseenter = e => {
+  //   console.log('addEventListener');
+  // };
+  
+  
+  // Random color
+  const randomInt = (min, max) =>
+    Math.floor(Math.random() * (max - min + 1) + min);
+  
+  const randomColor = () =>
+    `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+  
+  document.querySelector('.nav__link').addEventListener('click', function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('Link', e.target, e.currentTarget);
+  });
+  document.querySelector('.nav__links').addEventListener('click', function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('List', e.target, e.currentTarget);
+  });
+  document.querySelector('.nav').addEventListener('click', function (e) {
+    this.style.backgroundColor = randomColor();
+  console.log('Nav', e.target, e.currentTarget);
+});
+
+
+// Smooth scrolling
+btnScrollTo.addEventListener('click', e => {
+  // const s1coords = section1.getBoundingClientRect();
+
+  // console.log(`Current scroll X/Y: ${window.scrollX}/${window.scrollY}`);
+
+  // Scrolling
+
+  // Older way
+  // object's current position + current scroll
+  // window.scrollTo(
+  //   s1coords.left + window.scrollX,
+  //   s1coords.top + window.scrollY
+  // );
+
+  // window.scrollTo({
+  //   left: s1coords.left + window.scrollX,
+  //   top: s1coords.top + window.scrollY,
+  //   behavior: 'smooth',
+  // });
+
+  // Modern way
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+
+const h1 = document.querySelector('h1');
+
+// Going downwards: child
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.childNodes);
+console.log(h1.children); // html elements
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'white';
+
+// Going upwards: parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+
+// Going sideways: siblings
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+
+console.log(h1.parentElement.children);
 
 */
