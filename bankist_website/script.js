@@ -13,6 +13,8 @@ const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
+const header = document.querySelector('.header');
+const allSections = document.querySelectorAll('.section');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -107,14 +109,48 @@ nav.addEventListener('mouseover', handleHover.bind(0.5));
 nav.addEventListener('mouseout', handleHover.bind(1));
 
 // Sticky navigation
-const intialCoords = section1.getBoundingClientRect();
+// const intialCoords = section1.getBoundingClientRect();
 
-window.addEventListener('scroll', () => {
-  console.log(window.scrollY);
-  console.log(intialCoords);
+// window.addEventListener('scroll', () => {
+//   // console.log(window.scrollY);
+//   // console.log(intialCoords);
 
-  if (window.scrollY > intialCoords.top) nav.classList.add('sticky');
+//   if (window.scrollY > intialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+// Sticky navigation: Intersection Observer API
+
+const navHeight = nav.getBoundingClientRect().height;
+
+function stickyNav(entries) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
+}
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+headerObserver.observe(header);
+
+// Reveal sections
+function revealSection(entries, observer) {
+  const [entry] = entries;
+
+  entry.target.classList.remove('section--hidden');
+}
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.25,
+});
+
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
 });
 
 /*
@@ -292,4 +328,19 @@ console.log(h1.nextSibling);
 
 console.log(h1.parentElement.children);
 
+
+// Intersection Observer API
+function obsCallback(entries, observer) {
+  entries.forEach(entry => {
+    console.log(entry);
+  });
+}
+
+const obsOptions = {
+  root: null, // if null, the root will be the viewport 
+  threshold: [0, 0.2], // when that percentage is in view the callback is fire
+};
+
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(section1);
 */
